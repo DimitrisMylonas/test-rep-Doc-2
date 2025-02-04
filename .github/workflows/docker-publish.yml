@@ -25,4 +25,3 @@ jobs:
       - name: Push Docker images to Docker Hub
         run: |
           docker push dimitris709/classifier:${{ env.SHORT_SHA }}
-          docker push dimitris709/classifier:latest
