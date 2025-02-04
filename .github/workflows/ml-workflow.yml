@@ -1,0 +1,55 @@
+name: Train MLP Classifier on IBM Cloud
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  train_model_on_ibm_cloud:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install numpy==1.23.5 pandas==1.5.3 ibm-watson-machine-learning
+        pip install ibm-watson-machine-learning
+
+    - name: Set IBM Cloud API credentials
+      run: |
+        echo "IBM_API_KEY=${{ secrets.IBM_CLOUD_API_KEY }}" >> $GITHUB_ENV
+        echo "IBM_ENDPOINT=${{ secrets.IBM_CLOUD_ENDPOINT }}" >> $GITHUB_ENV
+
+    - name: List files
+      run: ls -alh
+
+    - name: Deploy to IBM Cloud (Watson Machine Learning)
+      run: |
+        python deploy_to_ibm_cloud.py
+
+    - name: Check for model and metrics
+      run: ls -alh
+
+    - name: Upload trained model and metrics
+      uses: actions/upload-artifact@v4
+      with:
+        name: trained-mlp-model
+        path: model.pkl  # ή .h5 αν το αποθηκεύεται έτσι
+    - name: Upload metrics CSV
+      uses: actions/upload-artifact@v4
+      with:
+        name: training-metrics
+        path: metrics.csv
