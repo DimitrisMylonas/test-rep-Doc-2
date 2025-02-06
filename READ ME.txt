@@ -1,0 +1,2 @@
+Every time we make a commit on Github, a workflow is activated. A new image is created and sent to 
+docker hub.
