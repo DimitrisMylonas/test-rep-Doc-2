@@ -31,12 +31,12 @@ model.fit(X_train_std, y_train)
 y_predicted = model.predict(X_test_std)
 
 
-
+print("Multilayer Perceptron Classifier results: ")
 print("Recall: %2f" % metrics.recall_score(y_test, y_predicted, average='macro', zero_division=1))
 print("Precision Score: %2f" % metrics.precision_score(y_test, y_predicted, average='macro', zero_division=1))
 print("Accuracy: %2f" % metrics.accuracy_score(y_test, y_predicted))
 print("F1: %2f" % metrics.f1_score(y_test, y_predicted, average='macro'))
-print("That's all :)")
+
 
 
 
